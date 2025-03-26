@@ -60,7 +60,6 @@ class Country extends Select
             ->toArray();
     }
 
-
     public function map(array | Closure | string | Arrayable | null $mapped = null): static
     {
         $this->mapped = $mapped;
