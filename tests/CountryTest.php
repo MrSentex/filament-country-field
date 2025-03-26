@@ -192,3 +192,91 @@ it('clears the countries cache', function () {
 
     expect(Cache::get('filament-countries-field.en'))->toBeNull();
 });
+
+it('can filter to only show specific countries', function () {
+    $mock = $this->partialMock(Country::class, function (MockInterface $mock) {
+        $mock->shouldReceive('getList')
+            ->once()
+            ->andReturn(['US' => 'United States', 'CA' => 'Canada', 'BE' => 'Belgium']);
+    });
+
+    $options = $mock
+        ->only(['US', 'CA'])
+        ->getOptions();
+
+    expect($options)->toBe(['CA' => 'Canada', 'US' => 'United States']);
+});
+
+it('shows all countries when only() is called with an empty array', function () {
+    $mock = $this->partialMock(Country::class, function (MockInterface $mock) {
+        $mock->shouldReceive('getList')
+            ->once()
+            ->andReturn(['US' => 'United States', 'CA' => 'Canada', 'BE' => 'Belgium']);
+    });
+
+    $options = $mock
+        ->only([])
+        ->getOptions();
+
+    expect($options)->toBe(['BE' => 'Belgium', 'CA' => 'Canada', 'US' => 'United States']);
+});
+
+it('shows all countries when only() is passed non-existent country codes', function () {
+    $mock = $this->partialMock(Country::class, function (MockInterface $mock) {
+        $mock->shouldReceive('getList')
+            ->once()
+            ->andReturn(['US' => 'United States', 'CA' => 'Canada', 'BE' => 'Belgium']);
+    });
+
+    $options = $mock
+        ->only(['XX', 'YY'])
+        ->getOptions();
+
+    expect($options)->toBe(['BE' => 'Belgium', 'CA' => 'Canada', 'US' => 'United States']);
+});
+
+it('correctly combines only() with exclude() to filter countries', function () {
+    $mock = $this->partialMock(Country::class, function (MockInterface $mock) {
+        $mock->shouldReceive('getList')
+            ->once()
+            ->andReturn(['US' => 'United States', 'CA' => 'Canada', 'BE' => 'Belgium', 'FR' => 'France']);
+    });
+
+    $options = $mock
+        ->only(['US', 'CA', 'BE'])
+        ->exclude(['BE'])
+        ->getOptions();
+
+    expect($options)->toBe(['CA' => 'Canada', 'US' => 'United States']);
+});
+
+it('returns filtered options after only(), exclude(), add() and map() operations', function () {
+    $mock = $this->partialMock(Country::class, function (MockInterface $mock) {
+        $mock->shouldReceive('getList')
+            ->once()
+            ->andReturn(['US' => 'United States', 'CA' => 'Canada', 'BE' => 'Belgium', 'FR' => 'France']);
+    });
+
+    $options = $mock
+        ->only(['US', 'CA', 'BE'])
+        ->exclude(['BE'])
+        ->add(['MA' => 'Mars'])
+        ->map(['US' => 'UN'])
+        ->getOptions();
+
+    expect($options)->toBe(['CA' => 'Canada', 'MA' => 'Mars', 'UN' => 'United States']);
+});
+
+it('can filter valid countries when only() contains a mix of valid and invalid codes', function () {
+    $mock = $this->partialMock(Country::class, function (MockInterface $mock) {
+        $mock->shouldReceive('getList')
+            ->once()
+            ->andReturn(['US' => 'United States', 'CA' => 'Canada', 'BE' => 'Belgium']);
+    });
+
+    $options = $mock
+        ->only(['US', 'XX'])
+        ->getOptions();
+
+    expect($options)->toBe(['US' => 'United States']);
+});
