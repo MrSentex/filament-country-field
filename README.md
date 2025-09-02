@@ -45,8 +45,9 @@ CountryColumn::make('country')
 
 ## Configuration
 
-On top of all **[Select Field](https://filamentphp.com/docs/3.x/forms/fields/select)** methods, you can use these three helpers for the Form Component.
+On top of all **[Select Field](https://filamentphp.com/docs/3.x/forms/fields/select)** methods, you can use these four helpers for the Form Component.
 
+- `only()` restricts the list of countries.
 - `exclude()` removes an item from the list.
 - `add()` adds your own value to the list.
 - `map()` changes one key to another, such as `GB` to `UK`.
@@ -55,6 +56,7 @@ On top of all **[Select Field](https://filamentphp.com/docs/3.x/forms/fields/sel
 use Parfaitementweb\FilamentCountryField\Forms\Components\Country;
 
 Country::make('country')
+->only(['GB', 'GF', 'NL'])
 ->exclude(['NL'])
 ->add(['MA' =>'Mars'])
 ->map(['GB' => 'UK', 'GF' => 'FR'])

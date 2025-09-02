@@ -2,6 +2,18 @@
 
 All notable changes to `filament-country-field` will be documented in this file.
 
+## 2.4.0 - 2025-03-26
+
+### What's Changed
+
+* Add only() method to the component by @Devonab in https://github.com/parfaitementweb/filament-country-field/pull/25
+
+### New Contributors
+
+* @Devonab made their first contribution in https://github.com/parfaitementweb/filament-country-field/pull/25
+
+**Full Changelog**: https://github.com/parfaitementweb/filament-country-field/compare/2.3.0...2.4.0
+
 ## 2.2.0 - 2024-10-22
 
 ### What's Changed
