@@ -2,15 +2,12 @@
 
 namespace Parfaitementweb\FilamentCountryField\Traits;
 
-use Exception;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
 
 trait HasData
 {
-
     public function getCountriesList(): array
     {
         return $this->getList();
